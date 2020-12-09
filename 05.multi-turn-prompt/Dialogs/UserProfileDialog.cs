@@ -38,6 +38,7 @@ namespace Microsoft.BotBuilderSamples
                 M10011StepAsync,
                 M10012StepAsync,
                 M10014StepAsync,
+                M10015StepAsync,
                 M10016StepAsync,
                 // M10017StepAsync,
                 // M10018StepAsync,
@@ -188,9 +189,12 @@ namespace Microsoft.BotBuilderSamples
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
             // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-            await stepContext.Context.SendActivityAsync(
+            return await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($"Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
                         , cancellationToken);
+        }
+        private static async Task<DialogTurnResult> M10015StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
@@ -201,6 +205,7 @@ namespace Microsoft.BotBuilderSamples
         private static async Task<DialogTurnResult> M10016StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            stepContext.Values["M10015"] = (string)stepContext.Result;
             // stepContext.ActiveDialog.State["stepIndex"] = 2;
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
@@ -212,35 +217,33 @@ namespace Microsoft.BotBuilderSamples
                 }, cancellationToken);
         }
 
-    //     private static async Task<DialogTurnResult> M10017StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10017StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ChoicePrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text(" ✍ Do you want another question? Reply with 'yes' or 'no'  ✍ "),
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10018StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10018StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(TextPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("✍  If you are struggling to find something to be thankful for, you can always start small. It can be a supportive friend, a useful tool, a clean shirt, or a good meal. What is one thing that makes your life better?  ✍ "),
+                }, cancellationToken);
+        }
 
     //     private static async Task<DialogTurnResult> M10019StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
     //     {
