@@ -33,24 +33,21 @@ namespace Microsoft.BotBuilderSamples
                 M10014StepAsync,
                 M10015StepAsync,
                 M10016StepAsync,
-                // M10017StepAsync,
-                // M10018StepAsync,
-                // M10019StepAsync,
-                // M10020StepAsync,
-                // M10021StepAsync,
-                // M10022StepAsync,
-                // M10023StepAsync,
-                // M10024StepAsync,
-                // M10025StepAsync,
-                // M10026StepAsync,
-                // M10027StepAsync,
-                // M10029StepAsync,
-                // M10030StepAsync,
+                M10017StepAsync,
+                M10018StepAsync,
+                M10019StepAsync,
+                M10020StepAsync,
+                M10021StepAsync,
+                M10022StepAsync,
+                M10023StepAsync,
+                M10024StepAsync,
+                M10025StepAsync,
+                M10026StepAsync,
+                M10027StepAsync,
+                M10029StepAsync,
+                M10030StepAsync,
                 // M10031StepAsync,
-                // M10032StepAsync,
-                // M10033StepAsync,
-                // M10034StepAsync,
-                // M10035StepAsync,
+                M10035StepAsync,
                 // M10036StepAsync,
                 // M10037StepAsync,
                 // M10038StepAsync
@@ -58,9 +55,9 @@ namespace Microsoft.BotBuilderSamples
 
             // Add named dialogs to the DialogSet. These names are saved in the dialog state.
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
-            // AddDialog(new TextPrompt(nameof(TextPrompt)));
+            AddDialog(new TextPrompt(nameof(TextPrompt)));
             // AddDialog(new NumberPrompt<int>(nameof(NumberPrompt<int>), AgePromptValidatorAsync));
-            // AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
+            AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
             // AddDialog(new AttachmentPrompt(nameof(AttachmentPrompt), PicturePromptValidatorAsync));
 
@@ -154,7 +151,7 @@ namespace Microsoft.BotBuilderSamples
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("✍ Did you like this exercise? Reply with 'yes' or 'no'  ✍ "),
+                    Prompt = MessageFactory.Text("✍ Did you like this exercise? Reply with 'yes' or 'no'  ✍ ")
                 }, cancellationToken);
         }
 
@@ -171,7 +168,7 @@ namespace Microsoft.BotBuilderSamples
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("✍  Do you want us to send some questions for you to reflect on? Reply with 'yes' or 'no'  ✍ "),
+                    Prompt = MessageFactory.Text("✍  Do you want us to send some questions for you to reflect on? Reply with 'yes' or 'no'  ✍ ")
                 }, cancellationToken);
         }
 
@@ -182,16 +179,21 @@ namespace Microsoft.BotBuilderSamples
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
             // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-            return await stepContext.Context.SendActivityAsync(
-                        MessageFactory.Text($"Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
-                        , cancellationToken);
+            // return await stepContext.Context.SendActivityAsync(
+            //             MessageFactory.Text($"Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
+            //             , cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
+                }, cancellationToken);
         }
         private static async Task<DialogTurnResult> M10015StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text(" ✍ It can be helpful to give ourselves credit for the things we accomplish, even if they are small. Is there something you've done in the past couple days that helped you move forward? If not, is there a small step you are planning to take in the future?  ✍ "),
+                    Prompt = MessageFactory.Text(" ✍ It can be helpful to give ourselves credit for the things we accomplish, even if they are small. Is there something you've done in the past couple days that helped you move forward? If not, is there a small step you are planning to take in the future?  ✍ ")
                 }, cancellationToken);
         }
 
@@ -206,7 +208,7 @@ namespace Microsoft.BotBuilderSamples
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text(" ✍  Thank you for the response! Do you want another question? Reply with 'yes' or 'no'  ✍"),
+                    Prompt = MessageFactory.Text(" ✍  Thank you for the response! Do you want another question? Reply with 'yes' or 'no'  ✍")
                 }, cancellationToken);
         }
 
@@ -220,7 +222,7 @@ namespace Microsoft.BotBuilderSamples
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text(" ✍ Do you want another question? Reply with 'yes' or 'no'  ✍ "),
+                    Prompt = MessageFactory.Text(" ✍ Do you want another question? Reply with 'yes' or 'no'  ✍ ")
                 }, cancellationToken);
         }
 
@@ -234,205 +236,220 @@ namespace Microsoft.BotBuilderSamples
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("✍  If you are struggling to find something to be thankful for, you can always start small. It can be a supportive friend, a useful tool, a clean shirt, or a good meal. What is one thing that makes your life better?  ✍ "),
+                    Prompt = MessageFactory.Text("✍  If you are struggling to find something to be thankful for, you can always start small. It can be a supportive friend, a useful tool, a clean shirt, or a good meal. What is one thing that makes your life better?  ✍ ")
                 }, cancellationToken);
         }
 
-    //     private static async Task<DialogTurnResult> M10019StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10019StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            stepContext.Values["M10018"] = (string)stepContext.Result;
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("✍ Thank you for the response! Do you want another question? Reply with 'yes' or 'no'  ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10020StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10020StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text(" ✍ Do you want another question? Reply with 'yes' or 'no'  ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10021StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10021StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(TextPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text(" ✍ When do you feel the most motivated?  ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10022StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10022StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            stepContext.Values["M10021"] = (string)stepContext.Result;
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text(" ✍ Thank you for the response! Do you want another question? Reply with 'yes' or 'no'  ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10023StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10023StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text(" ✍ Do you want another question? Reply with 'yes' or 'no'  ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10024StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10024StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(TextPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text(" ✍ When do you feel the most relaxed?  ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10025StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10025StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            stepContext.Values["M10025"] = (string) stepContext.Result;
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("✍ Thank you for the response! Do you want another question? Reply with 'yes' or 'no' ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10026StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10026StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("✍ Do you want another question? Reply with 'yes' or 'no' ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10027StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10027StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(TextPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("✍  What makes you feel cozy and safe? ✍ ")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10029StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10029StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            stepContext.Values["M10028"] = (string) stepContext.Result;
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text($"Thank you for the response!")
+                        , cancellationToken);
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("✍ Do you want to see a message from another person using the texting program? Reply with 'yes' or 'no' ✍ ")
+                }, cancellationToken);
+        }
 
 
-    //     private static async Task<DialogTurnResult> M10030StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10030StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ChoicePrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("✍  Please pick a topic: ✍ "),
+                    Choices = ChoiceFactory.ToChoices(new List<string> { "a message about being overwhelmed", "a message about handling negative thoughts", 
+                    "a message about self-care", "a random message" }),
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10031StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        private static async Task<DialogTurnResult> M10035StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            stepContext.Values["M10030"] = ((FoundChoice)stepContext.Result).Value;
+            //Console.WriteLine("Choice Value:" + ((FoundChoice)stepContext.Result).Value);
+            switch(stepContext.Values["M10030"]){
+                case "a message about being overwhelmed":
+                    await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Here's a message from someone else using the texting program: 'It's okay to feel overwhelmed. Remember: One step at a time. Or one day at a time. It really is easier to segment things.'"), cancellationToken);
+                    break;
+                case "a message about handling negative thoughts":
+                    await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Here's a message about dealing with negative thoughts from someone else using the texting program: 'Take a moment to view your circumstances from a different point of view. Pick any point of view you want. See how it feels to look at things differently.'"), cancellationToken);
+                    break;
+                case "a message about self-care":
+                    await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Here's a message about self-care from someone else using the texting program: 'Although they can be painful to witness, other people's problems are not your own. Take some time to remember that the person you are best suited to help is you, just as the person they are best suited to help is them.'"), cancellationToken);
+                    break;
+                case "a random message":
+                    await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Here's a random message from someone else using the texting program: 'Although they can be painful to witness, other people's problems are not your own. Take some time to remember that the person you are best suited to help is you, just as the person they are best suited to help is them.'"), cancellationToken);
+                    break;
+                default:
+                    break;
+            }
+            // stepContext.ActiveDialog.State["stepIndex"] = 2;
+            // return await AgeStepAsync(stepContext, cancellationToken);
+            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
+                new PromptOptions
+                {
+                    Prompt = MessageFactory.Text("✍ Do you want us to send you this message again? Reply with 'yes' or 'no' ✍")
+                }, cancellationToken);
+        }
 
-    //     private static async Task<DialogTurnResult> M10032StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
+        // private static async Task<DialogTurnResult> M10032StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
+        //     Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+        //     // stepContext.ActiveDialog.State["stepIndex"] = 2;
+        //     // return await AgeStepAsync(stepContext, cancellationToken);
+        //     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+        //     // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+        //     return await stepContext.PromptAsync(nameof(ChoicePrompt),
+        //         new PromptOptions
+        //         {
+        //             Prompt = MessageFactory.Text("Please enter your mode of transport."),
+        //             Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
+        //         }, cancellationToken);
+        // }
 
 
     //     private static async Task<DialogTurnResult> M10033StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -480,48 +497,49 @@ namespace Microsoft.BotBuilderSamples
     //             }, cancellationToken);
     //     }
 
-    //     private static async Task<DialogTurnResult> M10036StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("NameStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         stepContext.Values["transport"] = ((FoundChoice)stepContext.Result).Value;
+        // private static async Task<DialogTurnResult> M10036StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
+        //     // Console.WriteLine("NameStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+        //     // stepContext.Values["transport"] = ((FoundChoice)stepContext.Result).Value;
 
-    //         return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") }, cancellationToken);
-    //     }
+        //     return await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Got it! We won't send you this one again."), cancellationToken);
+        // }
 
-    //     private async Task<DialogTurnResult> M10037StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("NameConfirmStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         stepContext.Values["name"] = (string)stepContext.Result;
+        // private async Task<DialogTurnResult> M10037StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
+        //     // Console.WriteLine("NameConfirmStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+        //     // stepContext.Values["name"] = (string)stepContext.Result;
 
-    //         // We can send messages to the user at any point in the WaterfallStep.
-    //         await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thanks {stepContext.Result}."), cancellationToken);
+        //     // We can send messages to the user at any point in the WaterfallStep.
+        //     return await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Got it! We will save this one to send to you later."), cancellationToken);
 
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Would you like to give your age?") }, cancellationToken);
-    //     }
+        //     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+        //     //return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Would you like to give your age?") }, cancellationToken);
+        // }
 
-    //     private async Task<DialogTurnResult> M10038StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("AgeStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         if ((bool)stepContext.Result)
-    //         {
-    //             // User said "yes" so we will be prompting for the age.
-    //             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //             var promptOptions = new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your age."),
-    //                 RetryPrompt = MessageFactory.Text("The value entered must be greater than 0 and less than 150."),
-    //             };
+        // private async Task<DialogTurnResult> M10038StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
+        //     return await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Ok, we'll skip this for now!"), cancellationToken);
+        //     // Console.WriteLine("AgeStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+        //     // if ((bool)stepContext.Result)
+        //     // {
+        //     //     // User said "yes" so we will be prompting for the age.
+        //     //     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+        //     //     var promptOptions = new PromptOptions
+        //     //     {
+        //     //         Prompt = MessageFactory.Text("Please enter your age."),
+        //     //         RetryPrompt = MessageFactory.Text("The value entered must be greater than 0 and less than 150."),
+        //     //     };
 
-    //             return await stepContext.PromptAsync(nameof(NumberPrompt<int>), promptOptions, cancellationToken);
-    //         }
-    //         else
-    //         {
-    //             // User said "no" so we will skip the next step. Give -1 as the age.
-    //             return await stepContext.NextAsync(-1, cancellationToken);
-    //         }
-    //         // return await stepContext.NextAsync(-1, cancellationToken);
-    //     }
+        //     //     return await stepContext.PromptAsync(nameof(NumberPrompt<int>), promptOptions, cancellationToken);
+        //     // }
+        //     // else
+        //     // {
+        //     //     // User said "no" so we will skip the next step. Give -1 as the age.
+        //     //     return await stepContext.NextAsync(-1, cancellationToken);
+        //     // }
+        //     // return await stepContext.NextAsync(-1, cancellationToken);
+        // }
 
     //     private static async Task<DialogTurnResult> PictureStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
     //     {
