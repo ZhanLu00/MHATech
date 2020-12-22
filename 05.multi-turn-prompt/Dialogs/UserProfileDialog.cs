@@ -26,13 +26,6 @@ namespace Microsoft.BotBuilderSamples
             // This array defines how the Waterfall will execute.
             var waterfallSteps = new WaterfallStep[]
             {
-                // TransportStepAsync,
-                // NameStepAsync,
-                // NameConfirmStepAsync,
-                // AgeStepAsync,
-                // PictureStepAsync,
-                // ConfirmStepAsync,
-                // SummaryStepAsync,
                 M1002StepAsync,
                 M1003StepAsync,
                 M10011StepAsync,
@@ -224,7 +217,7 @@ namespace Microsoft.BotBuilderSamples
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
             // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-            return await stepContext.PromptAsync(nameof(ChoicePrompt),
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
                     Prompt = MessageFactory.Text(" ✍ Do you want another question? Reply with 'yes' or 'no'  ✍ "),
