@@ -30,7 +30,7 @@ namespace Microsoft.BotBuilderSamples
                 M1003StepAsync,
                 M10011StepAsync,
                 M10012StepAsync,
-                M10014StepAsync,
+                // M10014StepAsync,
                 M10015StepAsync,
                 M10016StepAsync,
                 M10017StepAsync,
@@ -136,7 +136,7 @@ namespace Microsoft.BotBuilderSamples
             }
 
             // time in milliseconds
-            Task.Delay(60000).Wait();
+            // Task.Delay(60000).Wait();
           
 
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
@@ -172,24 +172,27 @@ namespace Microsoft.BotBuilderSamples
                 }, cancellationToken);
         }
 
-        private static async Task<DialogTurnResult> M10014StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-            // return await stepContext.Context.SendActivityAsync(
-            //             MessageFactory.Text($"Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
-            //             , cancellationToken);
-            return await stepContext.PromptAsync(nameof(TextPrompt),
-                new PromptOptions
-                {
-                    Prompt = MessageFactory.Text("Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
-                }, cancellationToken);
-        }
+        // private static async Task<DialogTurnResult> M10014StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        // {
+        //     Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+        //     // stepContext.ActiveDialog.State["stepIndex"] = 2;
+        //     // return await AgeStepAsync(stepContext, cancellationToken);
+        //     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
+        //     // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+        //     // return await stepContext.Context.SendActivityAsync(
+        //     //             MessageFactory.Text($"Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
+        //     //             , cancellationToken);
+        //     return await stepContext.PromptAsync(nameof(TextPrompt),
+        //         new PromptOptions
+        //         {
+        //             Prompt = MessageFactory.Text("Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
+        //         }, cancellationToken);
+        // }
         private static async Task<DialogTurnResult> M10015StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text($"Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
+                        , cancellationToken);
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
@@ -233,10 +236,14 @@ namespace Microsoft.BotBuilderSamples
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
             // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text($"✍  If you are struggling to find something to be thankful for, you can always start small. It can be a supportive friend, a useful tool, a clean shirt, or a good meal. What is one thing that makes your life better?  ✍ ")
+                        , cancellationToken);
+
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("✍  If you are struggling to find something to be thankful for, you can always start small. It can be a supportive friend, a useful tool, a clean shirt, or a good meal. What is one thing that makes your life better?  ✍ ")
+                    Prompt = MessageFactory.Text("You can write down your response here...")
                 }, cancellationToken);
         }
 
@@ -276,10 +283,14 @@ namespace Microsoft.BotBuilderSamples
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
             // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text($"✍ When do you feel the most motivated?  ✍ ")
+                        , cancellationToken);
+
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text(" ✍ When do you feel the most motivated?  ✍ ")
+                    Prompt = MessageFactory.Text("You can write down your response here...")
                 }, cancellationToken);
         }
 
@@ -319,10 +330,14 @@ namespace Microsoft.BotBuilderSamples
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
             // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text($" ✍ When do you feel the most relaxed?  ✍ ")
+                        , cancellationToken);
+
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text(" ✍ When do you feel the most relaxed?  ✍ ")
+                    Prompt = MessageFactory.Text(" You can write down your response here... ")
                 }, cancellationToken);
         }
 
@@ -362,10 +377,14 @@ namespace Microsoft.BotBuilderSamples
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
             // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text($"✍  What makes you feel cozy and safe? ✍  ")
+                        , cancellationToken);
+
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("✍  What makes you feel cozy and safe? ✍ ")
+                    Prompt = MessageFactory.Text("You can write down your response here...")
                 }, cancellationToken);
         }
 
@@ -395,10 +414,13 @@ namespace Microsoft.BotBuilderSamples
             // return await AgeStepAsync(stepContext, cancellationToken);
             // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
             // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text($"✍  Please pick a topic: ✍ ")
+                        , cancellationToken);
             return await stepContext.PromptAsync(nameof(ChoicePrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("✍  Please pick a topic: ✍ "),
+                    Prompt = MessageFactory.Text("Please type # of message (i.e. 4) or the whole message text (i.e. a random message):"),
                     Choices = ChoiceFactory.ToChoices(new List<string> { "a message about being overwhelmed", "a message about handling negative thoughts", 
                     "a message about self-care", "a random message" }),
                 }, cancellationToken);
