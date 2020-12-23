@@ -519,49 +519,28 @@ namespace Microsoft.BotBuilderSamples
     //             }, cancellationToken);
     //     }
 
-        // private static async Task<DialogTurnResult> M10036StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
-        //     // Console.WriteLine("NameStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-        //     // stepContext.Values["transport"] = ((FoundChoice)stepContext.Result).Value;
+        private static async Task<DialogTurnResult> M10036StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            // Console.WriteLine("NameStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            // stepContext.Values["transport"] = ((FoundChoice)stepContext.Result).Value;
 
-        //     return await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Got it! We won't send you this one again."), cancellationToken);
-        // }
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Got it! We won't send you this one again."), cancellationToken);
+            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+        }
 
-        // private async Task<DialogTurnResult> M10037StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
-        //     // Console.WriteLine("NameConfirmStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-        //     // stepContext.Values["name"] = (string)stepContext.Result;
+        private async Task<DialogTurnResult> M10037StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+           
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Got it! We will save this one to send to you later."), cancellationToken);
+            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+        }
 
-        //     // We can send messages to the user at any point in the WaterfallStep.
-        //     return await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Got it! We will save this one to send to you later."), cancellationToken);
-
-        //     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-        //     //return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Would you like to give your age?") }, cancellationToken);
-        // }
-
-        // private async Task<DialogTurnResult> M10038StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
-        //     return await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Ok, we'll skip this for now!"), cancellationToken);
-        //     // Console.WriteLine("AgeStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-        //     // if ((bool)stepContext.Result)
-        //     // {
-        //     //     // User said "yes" so we will be prompting for the age.
-        //     //     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-        //     //     var promptOptions = new PromptOptions
-        //     //     {
-        //     //         Prompt = MessageFactory.Text("Please enter your age."),
-        //     //         RetryPrompt = MessageFactory.Text("The value entered must be greater than 0 and less than 150."),
-        //     //     };
-
-        //     //     return await stepContext.PromptAsync(nameof(NumberPrompt<int>), promptOptions, cancellationToken);
-        //     // }
-        //     // else
-        //     // {
-        //     //     // User said "no" so we will skip the next step. Give -1 as the age.
-        //     //     return await stepContext.NextAsync(-1, cancellationToken);
-        //     // }
-        //     // return await stepContext.NextAsync(-1, cancellationToken);
-        // }
+        private async Task<DialogTurnResult> M10038StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Ok, we'll skip this for now!"), cancellationToken);
+            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+           
+        }
 
     //     private static async Task<DialogTurnResult> PictureStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
     //     {
