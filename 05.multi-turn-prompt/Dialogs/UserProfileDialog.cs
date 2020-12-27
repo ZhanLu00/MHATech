@@ -81,7 +81,6 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M1003StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            
             context.ActiveDialog.State["stepIndex"] = (int)context.ActiveDialog.State["stepIndex"] + 2;
 
             Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
