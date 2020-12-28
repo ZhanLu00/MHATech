@@ -28,9 +28,7 @@ namespace Microsoft.BotBuilderSamples
             {
                 M1002StepAsync,
                 M1003StepAsync,
-                M10011StepAsync,
                 M10012StepAsync,
-                // M10014StepAsync,
                 M10015StepAsync,
                 M10016StepAsync,
                 M10017StepAsync,
@@ -46,11 +44,10 @@ namespace Microsoft.BotBuilderSamples
                 M10027StepAsync,
                 M10029StepAsync,
                 M10030StepAsync,
-                // M10031StepAsync,
                 M10035StepAsync,
-                // M10036StepAsync,
-                // M10037StepAsync,
-                // M10038StepAsync
+                M10036StepAsync,
+                M10037StepAsync,
+                M10038StepAsync,
             };
 
             // Add named dialogs to the DialogSet. These names are saved in the dialog state.
@@ -67,11 +64,6 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M1002StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions { 
                     Prompt = MessageFactory.Text(" ✍ Do you want a quick exercise you can do right now to help with mood and relaxation? ✍ ") 
@@ -81,11 +73,12 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M1003StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if (!((bool)stepContext.Result)){
+                Console.WriteLine("We are at here.");
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                stepContext.Values["10012D"] = false;
+                return await M10012StepAsync(stepContext, cancellationToken);
+            }
             
             Random rnd = new Random();
             int skip_index = rnd.Next(0, 7); // generate a number in between 0 and 6
@@ -138,7 +131,7 @@ namespace Microsoft.BotBuilderSamples
             // time in milliseconds
             // Task.Delay(60000).Wait();
           
-
+            stepContext.Values["10012D"] = true;
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -146,25 +139,15 @@ namespace Microsoft.BotBuilderSamples
                 }, cancellationToken);
         }
 
-        private static async Task<DialogTurnResult> M10011StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt),
-                new PromptOptions
-                {
-                    Prompt = MessageFactory.Text("✍ Did you like this exercise? Reply with 'yes' or 'no'  ✍ ")
-                }, cancellationToken);
-        }
 
         private static async Task<DialogTurnResult> M10012StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-            await stepContext.Context.SendActivityAsync(
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
+            if ((bool)stepContext.Values["10012D"]){
+                await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($"Thank you for the feedback!")
                         , cancellationToken);
+            }
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -172,24 +155,15 @@ namespace Microsoft.BotBuilderSamples
                 }, cancellationToken);
         }
 
-        // private static async Task<DialogTurnResult> M10014StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
-        //     Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-        //     // stepContext.ActiveDialog.State["stepIndex"] = 2;
-        //     // return await AgeStepAsync(stepContext, cancellationToken);
-        //     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-        //     // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-        //     // return await stepContext.Context.SendActivityAsync(
-        //     //             MessageFactory.Text($"Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
-        //     //             , cancellationToken);
-        //     return await stepContext.PromptAsync(nameof(TextPrompt),
-        //         new PromptOptions
-        //         {
-        //             Prompt = MessageFactory.Text("Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
-        //         }, cancellationToken);
-        // }
         private static async Task<DialogTurnResult> M10015StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
+            if (!((bool)stepContext.Result)){
+                // Skip from M10013 tp M10029
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 13;
+                stepContext.Values["10029D"] = false;
+                return await M10029StepAsync(stepContext, cancellationToken);
+            }
             await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($"Great! You can just think about your answers to these questions, or you can write back with your response. Just remember: This texting program isn't set up to understand what you say. Whatever you write is just for you.")
                         , cancellationToken);
@@ -202,12 +176,15 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10016StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
             stepContext.Values["M10015"] = (string)stepContext.Result;
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
+            if (stepContext.Result == null){
+                // Skip from M10015 to M10017
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                stepContext.Values["10017D"] = false;
+                return await M10017StepAsync(stepContext, cancellationToken);
+            }
+            stepContext.Values["10017D"] = true;
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -217,11 +194,16 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10017StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
+            if ((bool)stepContext.Values["10017D"] && stepContext.Result != null && (bool)stepContext.Result){ 
+                // from M10016 skip to M10018
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                return await M10018StepAsync(stepContext, cancellationToken);
+            }else{
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 11;
+                stepContext.Values["10029D"] = false;
+                return await M10029StepAsync(stepContext, cancellationToken);
+            }
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -231,11 +213,12 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10018StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
+            if (stepContext.Result == null || !((bool)stepContext.Result)){
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 10;
+                stepContext.Values["10029D"] = false;
+                return await M10029StepAsync(stepContext, cancellationToken);
+            }
             await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($"✍  If you are struggling to find something to be thankful for, you can always start small. It can be a supportive friend, a useful tool, a clean shirt, or a good meal. What is one thing that makes your life better?  ✍ ")
                         , cancellationToken);
@@ -249,12 +232,15 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10019StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
             stepContext.Values["M10018"] = (string)stepContext.Result;
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if (stepContext.Result == null){
+                // Skip from M10018 to M10020
+                stepContext.Values["10020D"] = false;
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                return await M10020StepAsync(stepContext, cancellationToken);
+            }
+            stepContext.Values["10020D"] = true;
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -264,11 +250,16 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10020StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if ((bool)stepContext.Values["10020D"]){
+                if (stepContext.Result == null || !((bool)stepContext.Result)){
+                    stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 8;
+                    stepContext.Values["10029D"] = false;
+                    return await M10029StepAsync(stepContext, cancellationToken);
+                }else{
+                    stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                    return await M10021StepAsync(stepContext, cancellationToken);
+                }
+            }
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -278,11 +269,11 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10021StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+           if (stepContext.Result == null || !((bool)stepContext.Result)){
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 7;
+                stepContext.Values["10029D"] = false;
+                return await M10029StepAsync(stepContext, cancellationToken);
+           }
             await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($"✍ When do you feel the most motivated?  ✍ ")
                         , cancellationToken);
@@ -296,12 +287,14 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10022StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
             stepContext.Values["M10021"] = (string)stepContext.Result;
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if (stepContext.Result == null){
+                // Skip from M10021 to M10023
+                stepContext.Values["10023D"] = false;
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                return await M10023StepAsync(stepContext, cancellationToken);
+            }
+            stepContext.Values["10023D"] =true;
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -311,11 +304,16 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10023StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if ((bool)stepContext.Values["10023D"]){
+                if (stepContext.Result == null || (!((bool) stepContext.Result))) {
+                    stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 5;
+                    stepContext.Values["10029D"] = false;
+                    return await M10029StepAsync(stepContext, cancellationToken);
+                }else{
+                    stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                    return await M10024StepAsync(stepContext, cancellationToken);
+                }
+            }
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -325,11 +323,11 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10024StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if (stepContext.Result == null || (!((bool) stepContext.Result))) {
+                    stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 4;
+                    stepContext.Values["10029D"] = false;
+                    return await M10029StepAsync(stepContext, cancellationToken);
+            }
             await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($" ✍ When do you feel the most relaxed?  ✍ ")
                         , cancellationToken);
@@ -343,12 +341,14 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10025StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
             stepContext.Values["M10025"] = (string) stepContext.Result;
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if (stepContext.Result == null){
+                // Skip from M10024 to M10026
+                stepContext.Values["10026D"] = false;
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                return await M10026StepAsync(stepContext, cancellationToken);
+            }
+            stepContext.Values["10026D"] = true;
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -358,11 +358,16 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10026StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if ((bool)stepContext.Values["10026D"]){
+               if (stepContext.Result == null || (!((bool) stepContext.Result))) {
+                    stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 2;
+                    stepContext.Values["10029D"] = false;
+                    return await M10029StepAsync(stepContext, cancellationToken);
+                }else{
+                    stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                    return await M10027StepAsync(stepContext, cancellationToken);
+                }
+            }
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -372,15 +377,16 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10027StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            if (stepContext.Result == null || (!((bool)stepContext.Result))) {
+                // Skip from 26 to 29
+                stepContext.Values["10029D"] = false;
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                return await M10029StepAsync(stepContext, cancellationToken);
+            }
             await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($"✍  What makes you feel cozy and safe? ✍  ")
                         , cancellationToken);
-
+            stepContext.Values["10029D"] = true;
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions
                 {
@@ -390,15 +396,15 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10029StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            stepContext.Values["M10028"] = (string) stepContext.Result;
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-            await stepContext.Context.SendActivityAsync(
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
+            if ((bool)stepContext.Values["10029D"]){
+                stepContext.Values["M10027"] = (string) stepContext.Result;
+                if (stepContext.Result != null){
+                    await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($"Thank you for the response!")
                         , cancellationToken);
+                }
+            }
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -409,11 +415,13 @@ namespace Microsoft.BotBuilderSamples
 
         private static async Task<DialogTurnResult> M10030StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
+            Console.WriteLine("WE are at step 30");
+            if (!((bool)stepContext.Result)){
+                // skip to step 38
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 4;
+                return await M10038StepAsync(stepContext, cancellationToken);
+            }
             await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text($"✍  Please pick a topic: ✍ ")
                         , cancellationToken);
@@ -447,10 +455,6 @@ namespace Microsoft.BotBuilderSamples
                 default:
                     break;
             }
-            // stepContext.ActiveDialog.State["stepIndex"] = 2;
-            // return await AgeStepAsync(stepContext, cancellationToken);
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                 new PromptOptions
                 {
@@ -458,85 +462,25 @@ namespace Microsoft.BotBuilderSamples
                 }, cancellationToken);
         }
 
-        // private static async Task<DialogTurnResult> M10032StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        // {
-        //     Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-        //     // stepContext.ActiveDialog.State["stepIndex"] = 2;
-        //     // return await AgeStepAsync(stepContext, cancellationToken);
-        //     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-        //     // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-        //     return await stepContext.PromptAsync(nameof(ChoicePrompt),
-        //         new PromptOptions
-        //         {
-        //             Prompt = MessageFactory.Text("Please enter your mode of transport."),
-        //             Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-        //         }, cancellationToken);
-        // }
-
-
-    //     private static async Task<DialogTurnResult> M10033StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
-
-    //     private static async Task<DialogTurnResult> M10034StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
-
-    //     private static async Task<DialogTurnResult> M10035StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-    //     {
-    //         Console.WriteLine("TransportStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-    //         // stepContext.ActiveDialog.State["stepIndex"] = 2;
-    //         // return await AgeStepAsync(stepContext, cancellationToken);
-    //         // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    //         // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    //         return await stepContext.PromptAsync(nameof(ChoicePrompt),
-    //             new PromptOptions
-    //             {
-    //                 Prompt = MessageFactory.Text("Please enter your mode of transport."),
-    //                 Choices = ChoiceFactory.ToChoices(new List<string> { "Car", "Bus", "Bicycle" }),
-    //             }, cancellationToken);
-    //     }
-
         private static async Task<DialogTurnResult> M10036StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // Console.WriteLine("NameStepAsync:" + stepContext.ActiveDialog.State["stepIndex"]);
-            // stepContext.Values["transport"] = ((FoundChoice)stepContext.Result).Value;
-
+            if ((bool)stepContext.Result){
+                stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
+                return await M10037StepAsync(stepContext, cancellationToken);
+            }
             await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Got it! We won't send you this one again."), cancellationToken);
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
 
-        private async Task<DialogTurnResult> M10037StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private static async Task<DialogTurnResult> M10037StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-           
             await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Got it! We will save this one to send to you later."), cancellationToken);
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
 
-        private async Task<DialogTurnResult> M10038StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private static async Task<DialogTurnResult> M10038StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"];
             await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Ok, we'll skip this for now!"), cancellationToken);
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
            
