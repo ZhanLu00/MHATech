@@ -74,7 +74,6 @@ namespace Microsoft.BotBuilderSamples
         private static async Task<DialogTurnResult> M1003StepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if (!((bool)stepContext.Result)){
-                Console.WriteLine("We are at here.");
                 stepContext.ActiveDialog.State["stepIndex"] = (int)stepContext.ActiveDialog.State["stepIndex"] + 1;
                 stepContext.Values["10012D"] = false;
                 return await M10012StepAsync(stepContext, cancellationToken);
